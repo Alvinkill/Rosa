@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu - Fresh Produce Market</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Fresh Produce Market</h1>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Main Menu</a>
+                <a href="about.html">About Us</a>
+                <a href="location.html">Location</a>
+                <a href="contact.html">Contact</a>
+                <a href="activities.html">Daily Activities</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h2>Our Main Menu</h2>
+        <div class="produce-grid">
+        </div>
+        <div id="cart">
+            <h3>Your Cart:</h3>
+            <ul id="cart-list"></ul>
+            <p id="total">Total: $0.00</p>
+            <button onclick="checkout()">Checkout</button>
+            <button onclick="clearCart()">Clear Cart</button>
+        </div>
+    </main>
+    <script>
+        let cart = {};
+
+        // Default products
+        const defaultProducts = [
+            { name: 'Apples', description: 'Fresh, crisp apples from local orchards.', price: 2.99, img: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Bananas', description: 'Ripe bananas, perfect for snacking.', price: 0.59, img: 'https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Carrots', description: 'Organic carrots, great for health.', price: 1.49, img: 'https://images.unsplash.com/photo-1582515073490-39981397c445?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Tomatoes', description: 'Juicy tomatoes for salads and cooking.', price: 3.99, img: 'plant.jpg' },
+            { name: 'Strawberries', description: 'Sweet and fresh strawberries.', price: 4.99, img: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Pineapple', description: 'Juicy pineapple, tropical delight.', price: 3.49, img: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Cucumber', description: 'Crisp cucumbers for salads.', price: 1.29, img: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+            { name: 'Blueberries', description: 'Antioxidant-rich blueberries.', price: 5.99, img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' }
+        ];
+
+        // Load products from localStorage or use defaults
+        let products = JSON.parse(localStorage.getItem('products')) || defaultProducts;
+        if (!localStorage.getItem('products')) {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+
+        // Render products
+        const grid = document.querySelector('.produce-grid');
+        products.forEach(product => {
+            const item = document.createElement('div');
+            item.className = 'produce-item';
+            item.innerHTML = `
+                <img src="${product.img}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p class="price">$${product.price.toFixed(2)}/lb</p>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('${product.name}', -1)">-</button>
+                    <span id="qty-${product.name}">0</span>
+                    <button onclick="changeQuantity('${product.name}', 1)">+</button>
+                </div>
+                <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+            `;
+            grid.appendChild(item);
+        });
+
+        function changeQuantity(item, delta) {
+            const qtySpan = document.getElementById('qty-' + item);
+            let qty = parseInt(qtySpan.textContent) + delta;
+            if (qty < 0) qty = 0;
+            qtySpan.textContent = qty;
+        }
+
+        function addToCart(item, price) {
+            const qty = parseInt(document.getElementById('qty-' + item).textContent);
+            if (qty > 0) {
+                if (cart[item]) {
+                    cart[item].quantity += qty;
+                } else {
+                    cart[item] = { price: price, quantity: qty };
+                }
+                updateCart();
+                // Reset quantity
+                document.getElementById('qty-' + item).textContent = '0';
+            }
+        }
+
+        function updateCart() {
+            const list = document.getElementById('cart-list');
+            list.innerHTML = '';
+            let total = 0;
+            for (const item in cart) {
+                const li = document.createElement('li');
+                li.innerHTML = `${item} - ${cart[item].quantity} x $${cart[item].price.toFixed(2)} = $${(cart[item].quantity * cart[item].price).toFixed(2)} <button onclick="removeFromCart('${item}')">Remove</button>`;
+                list.appendChild(li);
+                total += cart[item].quantity * cart[item].price;
+            }
+            document.getElementById('total').textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(item) {
+            delete cart[item];
+            updateCart();
+        }
+
+        function clearCart() {
+            cart = {};
+            updateCart();
+        }
+
+        function checkout() {
+            if (Object.keys(cart).length === 0) {
+                alert('Your cart is empty!');
+            } else {
+                let summary = 'Order Summary:\n';
+                let total = 0;
+                const orderItems = [];
+                for (const item in cart) {
+                    const itemTotal = cart[item].quantity * cart[item].price;
+                    summary += `${item}: ${cart[item].quantity} x $${cart[item].price.toFixed(2)} = $${itemTotal.toFixed(2)}\n`;
+                    total += itemTotal;
+                    orderItems.push({ name: item, quantity: cart[item].quantity, price: cart[item].price, total: itemTotal });
+                }
+                summary += `Total: $${total.toFixed(2)}`;
+                alert(summary + '\n\nThank you for your order! We will process it soon.');
+                
+                // Store order
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.push({
+                    id: Date.now(),
+                    items: orderItems,
+                    total: total,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                clearCart();
+            }
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Inventory - Fresh Produce Market</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .inventory-dashboard {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .inventory-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .product-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .product-card input, .product-card textarea {
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .product-card button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+        .product-card button:hover {
+            background-color: #229954;
+        }
+        .add-product {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .add-product:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Fresh Produce Market - Manage Inventory</h1>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Main Menu</a>
+                <a href="about.html">About Us</a>
+                <a href="location.html">Location</a>
+                <a href="contact.html">Contact</a>
+                <a href="activities.html">Daily Activities</a>
+                <a href="admin.html">Admin Dashboard</a>
+            </div>
+        </nav>
+    </header>
+    <main class="inventory-dashboard">
+        <div class="inventory-header">
+            <h2>📦 Manage Inventory</h2>
+            <p>Add, edit, or remove products from the menu</p>
+        </div>
+        <button class="add-product" onclick="addNewProduct()">+ Add New Product</button>
+        <div class="product-list" id="product-list">
+            <!-- Products will be loaded here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Fresh Produce Market. All rights reserved.</p>
+    </footer>
+    <script>
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
+        function loadProducts() {
+            const list = document.getElementById('product-list');
+            list.innerHTML = '';
+            products.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.img}" alt="${product.name}" id="img-${index}">
+                    <input type="text" value="${product.name}" onchange="updateProduct(${index}, 'name', this.value)">
+                    <textarea onchange="updateProduct(${index}, 'description', this.value)">${product.description}</textarea>
+                    <input type="number" step="0.01" value="${product.price}" onchange="updateProduct(${index}, 'price', parseFloat(this.value))">
+                    <input type="file" accept="image/*" onchange="uploadImage(${index}, this)">
+                    <input type="text" value="${product.img}" id="img-url-${index}" onchange="updateProduct(${index}, 'img', this.value)" placeholder="Or enter image URL">`;
+                    <button onclick="saveProducts()">Save Changes</button>
+                    <button onclick="deleteProduct(${index})" style="background-color: #e74c3c;">Delete</button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function updateProduct(index, field, value) {
+            products[index][field] = value;
+        }
+
+        function uploadImage(index, input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    products[index].img = e.target.result;
+                    document.getElementById(`img-${index}`).src = e.target.result;
+                    document.getElementById(`img-url-${index}`).value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProducts() {
+            localStorage.setItem('products', JSON.stringify(products));
+            alert('Changes saved!');
+        }
+
+        function deleteProduct(index) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products.splice(index, 1);
+                localStorage.setItem('products', JSON.stringify(products));
+                loadProducts();
+            }
+        }
+
+        function addNewProduct() {
+            const newProduct = {
+                name: 'New Product',
+                description: 'Description here',
+                price: 0.00,
+                img: 'https://via.placeholder.com/200'
+            };
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+            loadProducts();
+        }
+
+        loadProducts();
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

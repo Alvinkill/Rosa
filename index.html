@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Produce Market - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image:url('sky.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .hero {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.9), rgba(46, 204, 113, 0.9));
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInLeft 1.2s ease-out;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: slideInRight 1.4s ease-out;
+        }
+        .cta-button {
+            background: linear-gradient(45deg, #fff, #f0f8f0);
+            color: #27ae60;
+            padding: 1.5rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            animation: bounceIn 1.6s ease-out;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .unique-welcome {
+            background: linear-gradient(45deg, #e8f5e9, #d4edda);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .unique-welcome h3 {
+            color: #27ae60;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .unique-welcome p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Fresh Produce Market</h1>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">items</a>
+                <a href="about.html">info</a>
+                <a href="location.html">Location</a>
+                <a href="contact.html">Contact</a>
+                <a href="activities.html">Daily Activities</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="eco-banner">
+            <p>🌱 Committed to Sustainable Farming and Eco-Friendly Practices 🌱</p>
+        </section>
+        <section class="hero">
+            <h2>Welcome to Fresh Produce Market</h2>
+            <p>Your trusted source for the freshest, locally-sourced fruits and vegetables. Quality and sustainability at your fingertips.</p>
+            <a href="menu.html" class="cta-button">Explore Our Menu</a>
+        </section>
+        <section class="unique-welcome">
+            <h3>🌿 A Greener Tomorrow Starts Here</h3>
+            <p>At Fresh Produce Market, we're not just selling produce – we're nurturing the earth. Every purchase supports sustainable farming, reduces food miles, and promotes a healthier planet. Join our community of eco-conscious shoppers and taste the difference that fresh, local, and green makes!</p>
+        </section>
+        <section class="features">
+            <h3>Why Choose Us?</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>Fresh & Local</h4>
+                    <p>Direct from local farms to your table.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Quality Assured</h4>
+                    <p>Rigorous quality checks for every product.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Sustainable Practices</h4>
+                    <p>Committed to eco-friendly farming.</p>
+                </div>
+            </div>
+        <section class="company-images">
+            <h3>Our Company</h3>
+            <div class="image-gallery">
+                <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Farm Landscape">
+                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Fresh Produce">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Farm Workers">
+                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Market Stall">
+            </div>
+        </section>
+        <section class="testimonials">
+            <h3>What Our Customers Say</h3>
+            <blockquote>"The best produce I've ever tasted! Fresh and delicious." - Jane Doe</blockquote>
+            <blockquote>"Great service and amazing quality. Highly recommend!" - John Smith</blockquote>
+        </section>
+        <section class="reviews">
+            <h3>Customer Reviews</h3>
+            <div class="review-item">
+                <p>"Absolutely love the freshness! Will definitely order again."</p>
+                <span>- Emily R.</span>
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="review-item">
+                <p>"Excellent quality and fast delivery. Highly recommended!"</p>
+                <span>- Michael T.</span>
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="review-item">
+                <p>"The tomatoes were juicy and flavorful. Great service!"</p>
+                <span>- Sarah L.</span>
+                <div class="stars">★★★★☆</div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Fresh Produce Market. All rights reserved.</p>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
